@@ -1,14 +1,35 @@
 const { client, getAllusers } = require('./index');
 
-async function testDB() {
+async function dropTables() {
     try {
-        // connect the client to the database, finally
+        await client.query(`
+
+        `);
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function createTables() {
+    try {
+        await client.query(`
+
+        `);
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+async function rebuildDB() {
+    try {
         client.connect();
 
-        // queries are promises, so we can await them
-        const users = await getAllusers();
-        // for now, logging is a fine way to see what's up
-        console.log(users);
+        // const users = await getAllusers();
+        // console.log(users);
+
+        await dropTables();
+        await createTables();
     } catch (error) {
         console.error(error);
     } finally {
@@ -16,4 +37,4 @@ async function testDB() {
     }
 }
 
-testDB();
+rebuildDB();
