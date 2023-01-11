@@ -10,6 +10,7 @@ async function dropTables() {
         console.log("Starting to drop tables...");
 
         await client.query(`
+        DROP TABLE IF EXISTS posts;
         DROP TABLE IF EXISTS users;
       `);
 
@@ -33,6 +34,13 @@ async function createTables() {
           location VARCHAR(255) NOT NULL,   
           active BOOLEAN DEFAULT true
         );
+        CREATE TABLE posts (
+            id SERIAL PRIMARY KEY,
+            "authorId" INTEGER REFERENCES users(id) NOT NULL,
+            title VARCHAR(225) NOT NULL,
+            content TEXT NOT NULL,
+            active BOOLEAN DEFAULT true
+        );
       `);
 
         console.log("Finished building tables!");
@@ -45,7 +53,7 @@ async function createTables() {
 async function createInitialUsers() {
     try {
         console.log("Starting to create users...");
-        const albert = await createUser({ username: 'albert', password: 'bertie99' ,name: 'Albert', location: 'California'});
+        const albert = await createUser({ username: 'albert', password: 'bertie99', name: 'Albert', location: 'California' });
         const sandra = await createUser({ username: 'sandra', password: '2sandy4me', name: 'Sandra', location: 'Alaska' });
         const glamgal = await createUser({ username: 'glamgal', password: 'soglam', name: 'Joshua', location: 'Minnestota' });
         console.log("Finished creating users!");
@@ -80,10 +88,10 @@ async function testDB() {
         const updateUserResult = await updateUser(users[0].id, {
             name: "Newname Sogood",
             location: "Lesterville, KY"
-          });
-          console.log("Result:", updateUserResult);
-      
-          console.log("Finished database tests!");
+        });
+        console.log("Result:", updateUserResult);
+
+        console.log("Finished database tests!");
     } catch (error) {
         console.error("Error testing database!");
         throw error;
