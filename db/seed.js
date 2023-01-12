@@ -7,6 +7,7 @@ const {
     getAllPosts,
     updatePost,
     getUserById,
+    createTags,
 } = require('./index');
 
 async function dropTables() {
@@ -105,6 +106,13 @@ async function createInitialPosts() {
     }
 }
 
+async function createInitialTags(){
+    console.log('"Starting to create tags..." ')
+
+    const initialTag = await createTags(["funny", "sad", "happy"]);
+
+}
+
 async function rebuildDB() {
     try {
         client.connect();
@@ -113,6 +121,7 @@ async function rebuildDB() {
         await createTables();
         await createInitialUsers();
         await createInitialPosts();
+        await createInitialTags();
     } catch (error) {
         throw error;
     }
