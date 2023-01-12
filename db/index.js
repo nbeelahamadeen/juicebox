@@ -162,15 +162,13 @@ async function createTags(tagList) {
     RETURNING *;
     `, tagList);
 
-    console.log(results, 'finished')
-
     const { rows } = await client.query(`
     SELECT * FROM tags
     WHERE name
     IN (${selectValues});
     
     `, tagList);
-    console.log(rows);
+    
     return rows;
   } catch (error) {
     throw error;

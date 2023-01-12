@@ -111,6 +111,8 @@ async function createInitialTags(){
 
     const initialTag = await createTags(["funny", "sad", "happy"]);
 
+    console.log(initialTag, "finished creating tags");
+
 }
 
 async function rebuildDB() {
