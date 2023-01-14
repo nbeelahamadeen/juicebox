@@ -8,6 +8,9 @@ const {
     updatePost,
     getUserById,
     createTags,
+    addTagsToPost,
+    createPostTag,
+    getPostById,
 } = require('./index');
 
 async function dropTables() {
@@ -86,19 +89,22 @@ async function createInitialPosts() {
         await createPost({
             authorId: albert.id,
             title: "First Post",
-            content: "This is my first post. I hope I love writing blogs as much as I love writing them."
+            content: "This is my first post. I hope I love writing blogs as much as I love writing them.",
+            tags: ["#happy", "#youcandoanything"]
         });
 
         await createPost({
             authorId: sandra.id,
             title: "First Post",
-            content: "This is my first post. I hope I love writing blogs as much as I love reading them."
+            content: "This is my first post. I hope I love writing blogs as much as I love reading them.",
+            tags: ["#happy", "#worst-day-ever"]
         });
 
         await createPost({
             authorId: glamgal.id,
             title: "First Post",
-            content: "This is my first post. I hope I love writing blogs as much as I love seeing them."
+            content: "This is my first post. I hope I love writing blogs as much as I love seeing them.",
+            tags: ["#happy", "#youcandoanything", "#canmandoeverything"]
         });
 
     } catch (error) {
@@ -106,14 +112,32 @@ async function createInitialPosts() {
     }
 }
 
-async function createInitialTags(){
-    console.log('"Starting to create tags..." ')
+async function createInitialTags() {
+  try {
+    console.log("Starting to create tags...");
 
-    const initialTag = await createTags(["funny", "sad", "happy"]);
+    const [happy, sad, inspo, catman] = await createTags([
+      '#happy', 
+      '#worst-day-ever', 
+      '#youcandoanything',
+      '#catmandoeverything'
+    ]);
 
-    console.log(initialTag, "finished creating tags");
+    const [postOne, postTwo, postThree] = await getAllPosts();
 
+    await addTagsToPost(postOne.id, [happy, inspo]);
+    await addTagsToPost(postTwo.id, [sad, inspo]);
+    await addTagsToPost(postThree.id, [happy, catman, inspo]);
+
+    console.log("Finished creating tags!");
+    
+  } catch (error) {
+    console.log("Error creating tags!");
+    throw error;
+  }
 }
+
+
 
 async function rebuildDB() {
     try {
