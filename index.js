@@ -4,6 +4,9 @@ const server = express();
 const morgan = require('morgan');
 const { client } = require('./db');
 
+require('dotenv').config();
+console.log(process.env.JWT_SECRET);
+
 client.connect();
 
 
