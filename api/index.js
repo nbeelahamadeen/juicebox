@@ -1,16 +1,6 @@
 const express = require('express');
 const apiRouter = express.Router();
 
-
-
-const usersRouter = require('./users');
-const postsRouter = require('./posts');
-const tagsRouter = require('./tags');
-
-apiRouter.use('/users', usersRouter);
-apiRouter.use('/posts', postsRouter);
-apiRouter.use('/tags', tagsRouter);
-
 const jwt = require('jsonwebtoken');
 const { getUserById } = require('../db');
 const { JWT_SECRET } = process.env;
@@ -43,4 +33,22 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-module.exports = apiRouter;
+
+
+const usersRouter = require('./users');
+const postsRouter = require('./posts');
+const tagsRouter = require('./tags');
+
+apiRouter.use('/users', usersRouter);
+apiRouter.use('/posts', postsRouter);
+apiRouter.use('/tags', tagsRouter);
+
+apiRouter.use((error, req, res, next) => {
+    res.send({
+        name:error.name,
+        message: error.message
+    });
+});
+
+
+module.exports = apiRouter; 
